@@ -15,7 +15,7 @@
                 <div class="card" style="width: 18rem;">
                     <img src="{{url('/img/'.$data.'/01.jpg')}}" class="card-img-top">
                     <div class="card-body justify-content-center align-items-center d-flex">
-                        <a href="{{url('/flipbook/'.$data)}}" class="open">ชื่อหนังสือ</a>
+                        <a href="{{url('/front/flipbook/'.$data)}}" class="open">ชื่อหนังสือ</a>
                     </div>
                 </div>
             </div>

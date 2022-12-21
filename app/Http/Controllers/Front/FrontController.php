@@ -8,11 +8,10 @@ use Illuminate\Http\Request;
 class FrontController extends Controller
 {
     //
-    public function index($id=''){
-        $val = $id;
+    public function index(){
         $data = 1;
         // dd($data,$id);
-        return view('front.index',compact('data','val'));
+        return view('front.index',compact('data'));
     }
     public function ebook($id){
         $val = $id;

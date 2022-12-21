@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\applicationadmin\HomeController;
 use App\Http\Controllers\FlipBookController;
+use App\Http\Controllers\Front\FrontController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,10 +18,10 @@ use App\Http\Controllers\FlipBookController;
 Route::get('/', function () {
     return view('welcome');
 });
-//frontend
-Route::get('/', [FrontController::class,'index']);
-Route::get('/flipbook/{id}', [FrontController::class,'ebook']);
 
+//frontend
+Route::get('/front/flipbook', [FrontController::class,'index']);
+Route::get('/front/flipbook/{id}', [FrontController::class,'ebook']);
 Route::get('/test', [FrontController::class,'test']);
 
 
