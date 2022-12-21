@@ -17,7 +17,14 @@ use App\Http\Controllers\FlipBookController;
 Route::get('/', function () {
     return view('welcome');
 });
+//frontend
+Route::get('/', [FrontController::class,'index']);
+Route::get('/flipbook/{id}', [FrontController::class,'ebook']);
 
+Route::get('/test', [FrontController::class,'test']);
+
+
+//admin
 Route::get('/flipbook', [FlipBookController::class, 'index'])->name('flipbook.index');
 Route::get('/create', [FlipBookController::class, 'create'])->name('flipbook.create');
 Route::post('/create', [FlipBookController::class, 'store'])->name('flipbook.store');
