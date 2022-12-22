@@ -19,9 +19,12 @@
     justify-content: center;
     align-items: center;
 }
-.tools button:hover {
+
+.tools > i,a {
+    margin: 0 0.5rem;
     cursor: pointer;
 }
+
 #test {
     display: block;
     position: fixed;
@@ -31,7 +34,7 @@
 }
 #book {
     position: fixed;
-    width: 700px;
+    width: 800px;
     height: 500px;
     margin: 20px;
 }

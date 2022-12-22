@@ -22,8 +22,8 @@ Route::get('/', function () {
 //frontend
 Route::get('/front/flipbook', [FrontController::class,'index']);
 Route::get('/front/flipbook/{id}', [FrontController::class,'ebook']);
-Route::get('/test', [FrontController::class,'test']);
-
+Route::get('/front/flipbook/{id}/{page}/edit', [FrontController::class,'edit']);
+Route::get('/zip/{id}', [FrontController::class, 'zipfile']);
 
 //admin
 Route::get('/flipbook', [FlipBookController::class, 'index'])->name('flipbook.index');
