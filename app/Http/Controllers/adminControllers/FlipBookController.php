@@ -34,6 +34,7 @@ class FlipBookController extends Controller
         $flipbooks = DB::table('flipbook')
         ->leftJoin('flipbook_file','flipbook.id', '=','flipbook_file.FlipBookID')
         ->where('Page','1')
+        ->orderby('flipbook.id','desc')
         ->get();
 
         return view('applicationadmin.flipbook.bookindex',compact('flipbooks'));
