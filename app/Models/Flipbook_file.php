@@ -12,5 +12,6 @@ class Flipbook_file extends Model
         'ID',
         'FlipBookID',
         'Name',
+        'Page'
     ];
 }

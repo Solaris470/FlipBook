@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\adminControllers;
 
 use File;
+use Imagick;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -30,7 +31,10 @@ class FlipBookController extends Controller
        // $current_time = ($timezone) ? Carbon::now(str_replace('-', '/', $timezone)) : Carbon::now();
         //echo $time->toDateTimeString();
       // return view('flipbook::time', compact('current_time'));
-        $flipbooks = DB::table('flipbook')->where('status', '1')->get();
+        $flipbooks = DB::table('flipbook')
+        ->leftJoin('flipbook_file','flipbook.id', '=','flipbook_file.FlipBookID')
+        ->where('Page','1')
+        ->get();
 
         return view('applicationadmin.flipbook.bookindex',compact('flipbooks'));
     }
@@ -48,34 +52,52 @@ class FlipBookController extends Controller
      */
     public function store(Request $request)
     {
+        // Check Data Require
         $validated = $request->validate([
             'book_name' => 'required',
         ]);
-
         $input = $request->all();
 
+        // Insert Book
         $input['status'] = 1;
         $input['name'] = $input['book_name'];
         $book = Flipbook::create($input);
 
+        // Create Folder Image
         if($input['book_name']){
-            File::makeDirectory('images/'.$book->id,0777,true,true);
+            File::makeDirectory('images/'.$book->id,7777,true,true);
         }
-
 
         if($request->hasfile('flip_img'))
         {
-            foreach($request->file('flip_img') as $key => $file)
+            $page = 1;
+            foreach($request->file('flip_img') as $key)
             {
-                $name = $file->getClientOriginalName();
-                $filename  = date('Ymdhis').'_'.$name;
-                $path = $file->move(public_path('images/'.$book->id), $filename);
+                $filen = date('Ymdhis').'_  '.$key->getClientOriginalName();
+                // return dd($filen);
+                // exit();
+                $filename = pathinfo($key->getClientOriginalName(), PATHINFO_FILENAME);
+                $filetype = $key->getMimeType();
+                if($filetype == 'application/pdf'){
+                    $filepdf = date('Ymdhis').'_'.$key->getClientOriginalName();
+                    $key->move(public_path('pdf/'.$book->id), $filepdf);
+                    // Change PDF to Image File
+                    $imgExt = new Imagick();
+                    $imgExt->readImage(public_path('pdf/'.$book->id.'/'.$filepdf));
+                    $imgExt->writeImages(public_path('images/'.$book->id), $filename.'.jpeg');
+                }
+                
+                $filen = date('Ymdhis').'_'.$key->getClientOriginalName();
+
+                $key->move(public_path('images/'.$book->id), $filen);
+                // Insert To DB
                 $insert['FlipBookID'] = $book->id;
-                $insert['Name'] = $filename;
+                $insert['Page'] = $page;
+                $insert['Name'] = $filen;
                 Flipbook_file::create($insert); 
+                $page++;
             }
         }
-        // dd($input);
         // exit;
        // Subcategory::create($input);
 
@@ -91,7 +113,7 @@ class FlipBookController extends Controller
     public function show($id)
     {
         $flipbook = DB::table('flipbook')->where('id', $id)->get()[0];
-       //dd($flipbook);
+       dd($flipbook);
         $content = explode(",",$flipbook->content);
         return view('flipbook::showbook',compact('flipbook','content'));
     }
@@ -175,4 +197,12 @@ class FlipBookController extends Controller
         $fb->delete();
         return Redirect::route('flipbook.index');
     }
+    public function testImagick()
+    {
+        $imgExt = new Imagick();
+        $imgExt->readImage(public_path('pdf/doctest.pdf'));
+        $imgExt->writeImages(public_path('images/doctest.jpeg'), true);
+        dd("Document has been converted");
+    }
+
 }

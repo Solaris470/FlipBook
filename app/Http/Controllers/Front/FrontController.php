@@ -146,4 +146,9 @@ class FrontController extends Controller
         ->get();
         return view('front.edit',compact('val'));
     }
+    public function testedit($id) {
+        $val = $id;
+        return view('front.testedit',compact('val'));
+    }
+
 }

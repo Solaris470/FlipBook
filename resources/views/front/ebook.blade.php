@@ -9,6 +9,9 @@
 </head>
 <body>
     {{-- {{dd($val)}} --}}
+    {{-- <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="navId" role="tablist">
+        </li>
     <div id="test">
         <div class='tools'>
             <a href="{{url('/zip/'.$val[0]->idbook)}}"><i class="fa-solid fa-download" style="font-size: 38px;"></i></a>

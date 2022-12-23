@@ -26,6 +26,13 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <style>
+      #preview img { 
+        max-height: 100px; 
+        margin: 0.25rem;
+      }
+    </style>
+
 	</head>
 	<body>
 
@@ -38,38 +45,36 @@
 		<form class="register-form" action="{{ route('flipbook.store') }}" method="POST"  enctype="multipart/form-data">
           @csrf
     <div class="row">
-        <div class="col-lg-3">
-          <label>ชื่อหนังสือ<span class="required text-danger"> * </span></label></div>
+        <div class="col-lg-3 fw-bolder">
+          <label>ชื่อหนังสือ<span class="required text-danger"> * </span> : </label></div>
         <div class="col-lg-9">
           <input class="form-control" type="text" placeholder="กรอกชื่อหนังสือ" name="book_name">
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-3">
-          <label>รายละเอียดเกี่ยวกับหนังสือ</label>
+        <div class="col-lg-3 fw-bolder">
+          <label>รายละเอียดเกี่ยวกับหนังสือ</label> :
         </div>
         <div class="col-lg-9">   
           <input class="form-control" type="text" placeholder="รายละเอียดเกี่ยวกับหนังสือ" name="desc" value="">
         </div>
     </div>
     
+    <!-- Add Image -->
     <div class="row">
-      <div class="col-sm-3">
-        เพิ่มรูปภาพ<span class="required text-danger"> * </span>
+      <div class="col-sm-3 fw-bolder">
+        เพิ่มรูปภาพ<span class="required text-danger"> * </span> :
       </div>
       <div class="col-md-9">
         <div class="form-group">
-        <input type="file" name="flip_img[]" id="images" placeholder="Choose images" multiple/>
+        <input type="file" name="flip_img[]" id="images" placeholder="Choose images" class="form-control" multiple/>
         </div>
-      @error('images')
-      <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-      @enderror
       </div>
       <div class="col-sm-3">
-
       </div>
-      <div class="col-md-9">
-        <div class="images-preview-div img-thumbnail" width="200px;" height="200px;"></div>
+      <!-- Preview Image -->
+      <div class="col-md-9 mt-2">
+        <div class="images-preview-div img-thumbnail" id="preview"></div>
       </div>
     </div>
 
@@ -77,6 +82,7 @@
     <div class="row">
       <div class="col-lg-offset-3 pull-right">
         <button class="btn btn-lg btn-primary" type="submit">Create Flip Book</button>
+        
     </div>
 
 </div>
@@ -91,15 +97,18 @@
   $(function() {
   // Multiple images preview with JavaScript
   var previewImages = function(input, imgPreviewPlaceholder) {
-  if (input.files) {
-  var filesAmount = input.files.length;
-  for (i = 0; i < filesAmount; i++) {
-  var reader = new FileReader();
-  reader.onload = function(event) {
-  $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(imgPreviewPlaceholder);
-  }
-  reader.readAsDataURL(input.files[i]);
-  }
+    if (input.files) 
+      {
+        var filesAmount = input.files.length;
+        for (i = 0; i < filesAmount; i++) 
+        {
+        var reader = new FileReader();
+        reader.onload = function(event) 
+            {
+        $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(imgPreviewPlaceholder);
+           }
+      reader.readAsDataURL(input.files[i]);
+        }
   }
   };
   $('#images').on('change', function() {

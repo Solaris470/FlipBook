@@ -33,18 +33,51 @@
   </div>
 
 
-@foreach($flipbooks as $fb)
-<div class="col-md-2">
 
-<a href="{{ route('flipbook.show',$fb->id) }}" style="float: left;clear: both;">
 
-<img class="img-thumbnail" alt="200x200" style="width: 200px; height: 200px;" src="{{ asset(explode(",",$fb->content)[0])  }}" data-holder-rendered="true">
-{{ $fb->name  }} , {{ $fb->desc }}
-
-</a>  
-
+{{-- {{ $eiei = asset(public_path('images/'.$fb->id.'/'.$fb->Name)); }}
+{{ dd($eiei); }} --}}
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead class="table-primary">
+      <tr>
+        <th class="col text-center">ลำดับ</th></th>
+        <th scope="col">FlipBook</th>
+        <th scope="col">Last Modified</th>
+        <th scope="col">จัดการ</th>
+        <th scope="col">สถานะ</th>
+      </tr>
+    </thead>
+    @foreach($flipbooks as $fb)
+    <tbody>
+      <tr class="">
+        <td class="text-center">{{ $fb->id  }}</td>
+        <td scope="row"><img class="img-thumbnail" style="width: 80px; height: 90px;" src="{{ url('images/'.$fb->id.'/'.$fb->Name)  }}" data-holder-rendered="true"> {{ $fb->name  }}</td>
+        <td> {{ $fb->updated_at }} </td>
+        <td>
+          <button class="btn btn-sm btn-warning"></button>
+        </td>
+        <td>
+        @if ($fb->status == '1')
+           <p class="text-success">เผยแพร่</p>
+        @else
+          <p class="text-danger">ไม่เผยแพร่</p>
+        @endif
+        </td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
 </div>
-@endforeach
+
+{{-- <a href="{{ route('flipbook.show',$fb->id) }}" style="float: left;clear: both;">
+
+<img class="img-thumbnail" style="width: 200px; height: 200px;" src="{{ url('images/'.$fb->id.'/'.$fb->Name)  }}" data-holder-rendered="true">
+{{ $fb->name  }}
+
+</a>   --}}
+
+
 </div>
 </div>
 
