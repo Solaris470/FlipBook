@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flipbook</title>
+</head>
+<body>
+    <div id="test">
+        <div class='tools'>
+            <i id="angles-left" class="fa-solid fa-angles-left" style="font-size: 24px;"></i>
+            <i id='left' class="fa-solid fa-chevron-left" style="font-size: 24px;"></i>
+            <i id='right' class="fa-solid fa-chevron-right" style="font-size: 24px;"></i>
+            <i id="angles-right" class="fa-solid fa-angles-right" style="font-size: 24px;"></i>
+        </div>
+        <div class="test">
+            <div id="book"><div style="background:url(20221223030051_โต๊ะริม_page-0001.jpg); background-size:100% 100%;"></div><div style="background:url(20221223030051_โต๊ะริม_page-0002.jpg); background-size:cover;"><p class="page-left">2</p></div><div style="background:url(20221223030051_โต๊ะริม_page-0003.jpg); background-size:cover;"><p class="page-right">3</p></div><div style="background:url(20221223030051_โต๊ะริม_page-0004.jpg); background-size:cover;"><p class="page-left">4</p></div><div style="background:url(20221223030051_โต๊ะริม_page-0005.jpg); background-size:cover;"><p class="page-right">5</p></div><div style="background:url(20221223030051_โต๊ะริม_page-0006.jpg); background-size:cover;"><p class="page-left">6</p></div><div style="background:url(20221223030051_โต๊ะริม_page-0007.jpg); background-size:cover;"><p class="page-right">7</p></div><div style="background:url(20221223030051_โต๊ะริม_page-0008.jpg); background-size:cover;"><p class="page-left">8</p></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/97a4ddb345.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js"></script>
+    <script src="turn.js"></script>
+    <script>
+        $('#right').click(function(){
+            $('#book').turn("next");
+        });
+        $('#left').click(function(){
+            $('#book').turn("previous");
+        });
+        $('#angles-left').click(function(){
+            $('#book').turn("page",1);
+        });
+        $('#angles-right').click(function(){
+            $('#book').turn("page",8);
+        });
+        $('#book').turn({gradient:true,acceleration:true});
+        $(document).ready(function(){
+            // $('.open').click(function(){
+            //     $('#test').css('display','block');
+            //     $('#con').css('display','none');
+            // });
+            // $('#close').click(function(){
+                // $('#test').css('display','none');
+                // $('#con').css('display','flex');
+            // });
+            $('#qrcode').click(function(){
+                $('#opqrcode').css('display','flex');
+                $('#book').css('display','none');
+                $('.tools').css('display','none');
+            });
+            $('#closeqr').click(function(){
+                $('#opqrcode').css('display','none');
+                $('#book').css('display','flex');
+                $('.tools').css('display','flex')
+            });
+        });
+    </script>
+</body>
+</html>

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Front;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-use Zip;
 use File;
+use PDF;
 use ZipArchive;
 use App\Http\Controllers\Controller;
 use App\Models\Flipbook;
@@ -30,6 +29,11 @@ class FrontController extends Controller
         ->select('fb.id as idbook','fb.name as namebook','file.ID as idimg','file.Name as imgname','file.Page')
         ->where('fb.id',$id)
         ->get();
+        $load = DB::table('loading')
+        ->select()
+        ->where('BookID',$id)
+        ->first();
+        // dd($load);
         $path = resource_path('views/output/').$id;
         File::makeDirectory($path, $mode = 0777, true, true);
         $myfile = fopen($path.'/'.$val[0]->idbook.".html", "w") or die("Unable to open file!");
@@ -45,6 +49,12 @@ class FrontController extends Controller
 </head>
 <body>
     <div id=\"test\">
+        <div class='tools'>
+            <i id=\"angles-left\" class=\"fa-solid fa-angles-left\" style=\"font-size: 24px;\"></i>
+            <i id='left' class=\"fa-solid fa-chevron-left\" style=\"font-size: 24px;\"></i>
+            <i id='right' class=\"fa-solid fa-chevron-right\" style=\"font-size: 24px;\"></i>
+            <i id=\"angles-right\" class=\"fa-solid fa-angles-right\" style=\"font-size: 24px;\"></i>
+        </div>
         <div class=\"test\">
             <div id=\"book\">";
             fwrite($myfile, $txt);
@@ -58,7 +68,17 @@ class FrontController extends Controller
                 }
                 else
                 {
-                    $txt = "<div style=\"background:url(".$img->imgname."); background-size:cover;\"></div>";
+                    $txt = "<div style=\"background:url(".$img->imgname."); background-size:cover;\">";
+                    fwrite($myfile, $txt);
+                        if ($img->Page%2 == 0){
+                            $txt = "<p class=\"page-left\">$img->Page</p>";
+                            fwrite($myfile, $txt);
+                        }
+                        else {
+                            $txt = "<p class=\"page-right\">$img->Page</p>";
+                            fwrite($myfile, $txt);
+                        }
+                    $txt = "</div>";
                     fwrite($myfile, $txt);
                 }
             }
@@ -70,6 +90,19 @@ class FrontController extends Controller
     <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js\"></script>
     <script src=\"turn.js\"></script>
     <script>
+        $('#right').click(function(){
+            $('#book').turn(\"next\");
+        });
+        $('#left').click(function(){
+            $('#book').turn(\"previous\");
+        });
+        $('#angles-left').click(function(){
+            $('#book').turn(\"page\",1);
+        });
+        $('#angles-right').click(function(){
+            $('#book').turn(\"page\",$img->Page);
+        });
+        $('#book').turn({gradient:true,acceleration:true});
         $(document).ready(function(){
             // $('.open').click(function(){
             //     $('#test').css('display','block');
@@ -82,16 +115,20 @@ class FrontController extends Controller
             $('#qrcode').click(function(){
                 $('#opqrcode').css('display','flex');
                 $('#book').css('display','none');
-                // $('.tools').css('display','none');
+                $('.tools').css('display','none');
+            });
+            $('#closeqr').click(function(){
+                $('#opqrcode').css('display','none');
+                $('#book').css('display','flex');
+                $('.tools').css('display','flex')
             });
         });
-        $('#book').turn({gradient:true,acceleration:true});
     </script>
 </body>
 </html>";
         fwrite($myfile, $txt);
         fclose($myfile);
-        return view('front.ebook',compact('val'));
+        return view('front.ebook',compact('val','load'));
     }
 
     public function zipfile($id){
@@ -136,19 +173,13 @@ class FrontController extends Controller
         return response()->download(public_path("zip/".$fileName));
         // // dd($fileName);
     }
-
-    public function edit($id,$page){
+    public function pdf($id){
         $val = DB::table('flipbook as fb')
         ->join('flipbook_file as file','fb.id','=','file.FlipBookID')
         ->select('fb.id as idbook','fb.name as namebook','file.ID as idimg','file.Name as imgname','file.Page')
         ->where('fb.id',$id)
-        ->where('file.Page',$page)
         ->get();
-        return view('front.edit',compact('val'));
+        $pdf = PDF::loadView('front.pdf',compact('val'));
+        return $pdf->stream('test.pdf');
     }
-    public function testedit($id) {
-        $val = $id;
-        return view('front.testedit',compact('val'));
-    }
-
 }

@@ -9,8 +9,7 @@
     <title>Flipbook</title>
 </head>
 <body>
-    {{-- {{dd($val)}} --}}
-    {{-- <!-- Nav tabs -->
+        {{-- <!-- Nav tabs -->
     <ul class="nav nav-tabs" id="navId" role="tablist">
         <li class="nav-item">
             <a href="#tab1Id" class="nav-link active" data-bs-toggle="tab" aria-current="page">Active</a>
@@ -47,16 +46,28 @@
         bootstrap.Tab.getInstance(triggerEl).show() // Select tab by name
     </script>
     
+    @if (isset($load))
+        <div id="loader">
+            <div>
+                <img src="{{url('/loading/',$load->loading_img)}}">
+                <p style="text-align: center; margin-top: 1rem;">{{$load->loading_text}}</p>
+            </div>
+        </div>
+    @endif
     <div id="test">
         <div class='tools'>
-            <a href="{{url('/zip/'.$val[0]->idbook)}}"><i class="fa-solid fa-download" style="font-size: 38px;"></i></a>
-            <i id='qrcode' class="fa-solid fa-qrcode" style="font-size: 40px;"></i>
-            <i id='left' class="fa-solid fa-left-long" style="font-size: 38px;"></i>
-            <i id='rigth' class="fa-solid fa-right-long" style="font-size: 38px;"></i>
-            <a href="{{url('/front/flipbook')}}"><i id='close' class="fa-regular fa-circle-xmark" style="font-size: 40px;"></i></a>
+            <a href="{{url('/pdf/'.$val[0]->idbook)}}"><i class="fa-regular fa-file-pdf" style="font-size: 24px;"></i></a>
+            <a href="{{url('/zip/'.$val[0]->idbook)}}"><i class="fa-solid fa-download" style="font-size: 24px;"></i></a>
+            <i id='qrcode' class="fa-solid fa-qrcode" style="font-size: 24px;"></i>
+            <i id="angles-left" class="fa-solid fa-angles-left" style="font-size: 24px;"></i>
+            <i id='left' class="fa-solid fa-chevron-left" style="font-size: 24px;"></i>
+            <i id='right' class="fa-solid fa-chevron-right" style="font-size: 24px;"></i>
+            <i id="angles-right" class="fa-solid fa-angles-right" style="font-size: 24px;"></i>
+            <a href="{{url('/front/flipbook')}}"><i id='close' class="fa-regular fa-circle-xmark" style="font-size: 24px;"></i></a>
         </div>
         <div id="opqrcode">
             <div>
+                <i id='closeqr' class="fa-regular fa-circle-xmark" style="font-size: 24px;"></i>
                 {!! QrCode::size(300)->generate(url('/front/flipbook/'.$val[0]->idbook)) !!}
             </div>
         </div>
@@ -64,11 +75,15 @@
             <div id="book">
                 @foreach ($val as $img)
                     @if ($img->Page == 1)
-                            <div style="background:url('{{url('/images/'.$val[0]->idbook.'/'.$img->imgname)}}'); background-size:100% 100%;">
+                            <div style="background:url('{{url('/images/'.$val[0]->idbook.'/'.$img->imgname)}}'); background-size:cover;">
                             </div>
                     @else
                             <div style="background:url('{{url('/images/'.$val[0]->idbook.'/'.$img->imgname)}}'); background-size:cover;">
-                                <p>{{$img->Page}}</p>
+                                @if ($img->Page%2 == 0)
+                                    <p class="page-left">{{$img->Page}}</p>
+                                @else
+                                    <p class="page-right">{{$img->Page}}</p>
+                                @endif
                             </div>
                     @endif
                 @endforeach
@@ -78,12 +93,19 @@
     <script src="https://kit.fontawesome.com/97a4ddb345.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js"></script>
     <script src="{{url('/lib/turn.js')}}"></script>
+    <script src="{{url('/js/custom.js')}}"></script>
     <script>
-        $('#rigth').click(function(){
+        $('#right').click(function(){
             $('#book').turn("next");
         });
         $('#left').click(function(){
             $('#book').turn("previous");
+        });
+        $('#angles-left').click(function(){
+            $('#book').turn("page",1);
+        });
+        $('#angles-right').click(function(){
+            $('#book').turn("page",{{$img->Page}});
         });
         $('#book').turn({gradient:true,acceleration:true});
         $(document).ready(function(){
@@ -98,7 +120,12 @@
             $('#qrcode').click(function(){
                 $('#opqrcode').css('display','flex');
                 $('#book').css('display','none');
-                // $('.tools').css('display','none');
+                $('.tools').css('display','none');
+            });
+            $('#closeqr').click(function(){
+                $('#opqrcode').css('display','none');
+                $('#book').css('display','flex');
+                $('.tools').css('display','flex')
             });
         });
         // test = "{{url('/front/flipbook/'.$val[0]->idbook.'/'.$val[0]->idbook.'/edit')}}";

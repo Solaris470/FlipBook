@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Flipbook</title>
+</head>
+<body>
+    <div id="test">
+        <div class='tools'>
+            <i id="angles-left" class="fa-solid fa-angles-left" style="font-size: 24px;"></i>
+            <i id='left' class="fa-solid fa-chevron-left" style="font-size: 24px;"></i>
+            <i id='right' class="fa-solid fa-chevron-right" style="font-size: 24px;"></i>
+            <i id="angles-right" class="fa-solid fa-angles-right" style="font-size: 24px;"></i>
+        </div>
+        <div class="test">
+            <div id="book"><div style="background:url(20221223085422_316173981_469318868603845_1662460413934955624_n.jpg); background-size:100% 100%;"></div><div style="background:url(20221223085422_318754878_521916819970313_8356988525408659789_n (1).jpg); background-size:cover;"><p class="page-left">2</p></div><div style="background:url(20221223085422_318754878_521916819970313_8356988525408659789_n.jpg); background-size:cover;"><p class="page-right">3</p></div><div style="background:url(20221223085422_318865158_1894930764195304_5157129921428854739_n.jpg); background-size:cover;"><p class="page-left">4</p></div><div style="background:url(20221223085422_319390022_883555503058351_5343772692787089762_n.jpg); background-size:cover;"><p class="page-right">5</p></div><div style="background:url(20221223085422_319738809_893832284978485_3373359079877361050_n.jpg); background-size:cover;"><p class="page-left">6</p></div><div style="background:url(20221223085422_319818857_472914514913846_4754819395760706327_n.jpg); background-size:cover;"><p class="page-right">7</p></div><div style="background:url(20221223085422_319833686_524048019675567_1363132902658793588_n.jpg); background-size:cover;"><p class="page-left">8</p></div><div style="background:url(20221223085422_319843486_1369923067168704_1787575739366275876_n.jpg); background-size:cover;"><p class="page-right">9</p></div><div style="background:url(20221223085422_319852445_437994535067584_5518488518927527625_n.jpg); background-size:cover;"><p class="page-left">10</p></div><div style="background:url(20221223085422_319853564_564960955013103_5784267674544097339_n.jpg); background-size:cover;"><p class="page-right">11</p></div><div style="background:url(20221223085422_319853564_2154745531399808_7898011156102024134_n.jpg); background-size:cover;"><p class="page-left">12</p></div><div style="background:url(20221223085422_319853564_2465686960265343_4873593959461152633_n.jpg); background-size:cover;"><p class="page-right">13</p></div><div style="background:url(20221223085422_319854682_559092002356767_4660513203507604732_n.jpg); background-size:cover;"><p class="page-left">14</p></div><div style="background:url(20221223085422_319869401_538043494900406_2675854325399955676_n (1).jpg); background-size:cover;"><p class="page-right">15</p></div><div style="background:url(20221223085422_319869401_538043494900406_2675854325399955676_n.jpg); background-size:cover;"><p class="page-left">16</p></div><div style="background:url(20221223085422_319872669_1335315317306808_4586751470594526365_n.jpg); background-size:cover;"><p class="page-right">17</p></div><div style="background:url(20221223085422_319873357_908819483609348_6616720157754215335_n.jpg); background-size:cover;"><p class="page-left">18</p></div><div style="background:url(20221223085422_319875114_487398446852642_8126009794657407222_n.jpg); background-size:cover;"><p class="page-right">19</p></div><div style="background:url(20221223085422_319875411_3313988548868232_4344389582159257257_n.jpg); background-size:cover;"><p class="page-left">20</p></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/97a4ddb345.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js"></script>
+    <script src="turn.js"></script>
+    <script>
+        $('#right').click(function(){
+            $('#book').turn("next");
+        });
+        $('#left').click(function(){
+            $('#book').turn("previous");
+        });
+        $('#angles-left').click(function(){
+            $('#book').turn("page",1);
+        });
+        $('#angles-right').click(function(){
+            $('#book').turn("page",20);
+        });
+        $('#book').turn({gradient:true,acceleration:true});
+        $(document).ready(function(){
+            // $('.open').click(function(){
+            //     $('#test').css('display','block');
+            //     $('#con').css('display','none');
+            // });
+            // $('#close').click(function(){
+                // $('#test').css('display','none');
+                // $('#con').css('display','flex');
+            // });
+            $('#qrcode').click(function(){
+                $('#opqrcode').css('display','flex');
+                $('#book').css('display','none');
+                $('.tools').css('display','none');
+            });
+            $('#closeqr').click(function(){
+                $('#opqrcode').css('display','none');
+                $('#book').css('display','flex');
+                $('.tools').css('display','flex')
+            });
+        });
+    </script>
+</body>
+</html>

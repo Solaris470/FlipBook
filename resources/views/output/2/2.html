@@ -10,8 +10,14 @@
 </head>
 <body>
     <div id="test">
+        <div class='tools'>
+            <i id="angles-left" class="fa-solid fa-angles-left" style="font-size: 24px;"></i>
+            <i id='left' class="fa-solid fa-chevron-left" style="font-size: 24px;"></i>
+            <i id='right' class="fa-solid fa-chevron-right" style="font-size: 24px;"></i>
+            <i id="angles-right" class="fa-solid fa-angles-right" style="font-size: 24px;"></i>
+        </div>
         <div class="test">
-            <div id="book"><div style="background:url(20221221042046_ชลบรี.jpg); background-size:100% 100%;"></div><div style="background:url(20221221042046_ที่เที่ยวราชบุรี.jpg); background-size:cover;"></div>
+            <div id="book"><div style="background:url(20221221042046_ชลบรี.jpg); background-size:100% 100%;"></div><div style="background:url(20221221042046_ที่เที่ยวราชบุรี.jpg); background-size:cover;"><p class="page-left">2</p></div>
             </div>
         </div>
     </div>
@@ -19,6 +25,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js"></script>
     <script src="turn.js"></script>
     <script>
+        $('#right').click(function(){
+            $('#book').turn("next");
+        });
+        $('#left').click(function(){
+            $('#book').turn("previous");
+        });
+        $('#angles-left').click(function(){
+            $('#book').turn("page",1);
+        });
+        $('#angles-right').click(function(){
+            $('#book').turn("page",2);
+        });
+        $('#book').turn({gradient:true,acceleration:true});
         $(document).ready(function(){
             // $('.open').click(function(){
             //     $('#test').css('display','block');
@@ -31,10 +50,14 @@
             $('#qrcode').click(function(){
                 $('#opqrcode').css('display','flex');
                 $('#book').css('display','none');
-                // $('.tools').css('display','none');
+                $('.tools').css('display','none');
+            });
+            $('#closeqr').click(function(){
+                $('#opqrcode').css('display','none');
+                $('#book').css('display','flex');
+                $('.tools').css('display','flex')
             });
         });
-        $('#book').turn({gradient:true,acceleration:true});
     </script>
 </body>
 </html>
