@@ -1,5 +1,6 @@
 # FlipBook
-Open project in VS Code
+Open folder in VS Code
+<br>
 1.Copy flie .env.example to .env
  <br>
 2.เข้า Terminal พิมพ์คำสั่ง composer install
